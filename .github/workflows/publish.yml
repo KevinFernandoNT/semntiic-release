@@ -29,6 +29,10 @@ jobs:
       - run: npm run build --if-present
 
   publish:
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' }}
     steps:
@@ -38,7 +42,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
+      - run: npm run semantic-release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: npm run semantic-release
